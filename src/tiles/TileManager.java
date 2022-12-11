@@ -26,11 +26,11 @@ public class TileManager {
         tile = new Tile[10];
 
         //Stores the values in map.txt
-        mapTileNum = new int[gp.maxScreenCol][gp.maxScreenRow];
+        mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
 
         getTileImage();
 
-        loadMap("/main/res/maps/map.txt");
+        loadMap("/main/res/maps/worldmap.txt");
     
     }
     
@@ -72,12 +72,12 @@ public class TileManager {
             int col = 0;
             int row = 0;
 
-            while(col < gp.maxScreenCol && row < gp.maxScreenRow) {
+            while(col < gp.maxWorldCol && row < gp.maxWorldRow) {
                 
                 //Reads a line of text
                 String line = br.readLine(); 
 
-                while(col < gp.maxScreenCol){
+                while(col < gp.maxWorldCol){
 
                     String numbers[] = line.split(" ");
 
@@ -89,7 +89,7 @@ public class TileManager {
 
                 }
 
-                if(col == gp.maxScreenCol){
+                if(col == gp.maxWorldCol){
                     col = 0;
                     row++;
                 }
@@ -104,32 +104,55 @@ public class TileManager {
 
     public void draw(Graphics2D g2){
 
-        // g2.drawImage(tile[0].image, 0, 0, gp.tileSize, gp.tileSize, null);
-        // g2.drawImage(tile[1].image, 48, 0, gp.tileSize, gp.tileSize, null);
-        // g2.drawImage(tile[2].image, 96, 0, gp.tileSize, gp.tileSize, null);
 
-        int col = 0;
-        int row = 0;
-        int x = 0;
-        int y = 0;
+        int worldCol = 0;
+        int worldRow = 0;
 
-        while(col < gp.maxScreenCol && row < gp.maxScreenRow) {
+
+        while(worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRow) {
 
             //Extract a tile number which is stored in mapTileNum[0][0]
             //the entirety of the map data has been stored in the mapTileNum[][]
-            int tileNum = mapTileNum[col][row];
+            int tileNum = mapTileNum[worldCol][worldRow];
 
-            //tile[tileNum[]] works as an index of the Tile[] tile array.
-            g2.drawImage(tile[tileNum].image, x, y, gp.tileSize, gp.tileSize, null);
-            col++;
-            x += gp.tileSize;
+            //Checks the tile of world's X and Y (What Tile to put here)
+            //World X and Y are the positions on the map
+            int worldX = worldCol * gp.tileSize;
+            int worldY = worldRow * gp.tileSize;
 
-            if(col == gp.maxScreenCol){
+            //Then, the screen needs to determine where the player is in the world
+            //Remember that the player has to be center.
+            //So where on the screen do we draw our X and Y 
+            //Screen X and Y is where on the screen we draw World X and Y
+            //If player is at worldX: 500 and worldY: 500,
+            //then player is 500 pixels away from the 0,0 tiles.
+            //so the 0,0 tiles of the SCREEN should be drawn 500 tiles to the left 
+            //and 500 tiles to the top 
+            //TODO: UNDERSTYAND WHY gp.player.screenX and Y ARE ADDED HERE
+            int screenX = worldX - gp.player.worldX + gp.player.screenX;
+            int screenY = worldY - gp.player.worldY + gp.player.screenY;
 
-                col = 0;
-                x = 0;
-                row++;
-                y += gp.tileSize;
+
+            //Optimization:
+            //Creates a boundary around the player from the center of the screen,
+            //MINUS player.screenX and PLUS player.screenX
+            //MINUS player.screenY and PLUS player.screenY
+            //Aslong as a tile is in this boundary, draw it.
+            if(worldX + gp.tileSize > gp.player.worldX - gp.player.screenX && worldX - gp.tileSize < gp.player.worldX + gp.player.screenX && 
+               worldY + gp.tileSize> gp.player.worldY - gp.player.screenY && worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
+
+                //tile[tileNum[]] works as an index of the Tile[] tile array.
+                g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+
+            }
+
+            worldCol++;
+
+            //TODO:Discuss as an issue i stumbled upon. maxWorldCol was set to maxScreenCol, only loading the first 16 tiles.
+            if(worldCol == gp.maxWorldCol){
+
+                worldCol = 0;
+                worldRow++;
 
             }
         

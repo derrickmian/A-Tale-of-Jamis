@@ -14,11 +14,25 @@ public class Player extends Entity{
 	
 	GamePanel gp;
 	KeyHandler keyH;
+
+	//These are final because the player character's positions doesn't change. The background does. 
+	public final int screenX;
+	public final int screenY;
 	
 	public Player (GamePanel gp, KeyHandler keyH) {
 		
 		this.gp = gp;
 		this.keyH = keyH;
+		
+		//Keeps player position in the center of the screen (not really)
+		// screenX = gp.screenWidth/2;
+		// screenY = gp.screenHeight/2;
+		//Because the center of the screen is determined by the top left corner of the tile, it isn't actually center
+		//Comment out and test for yourself.
+
+		//Correct Player Position, which subtracts half a tile length from both X and Y to get the center of the current player tile:
+		screenX = gp.screenWidth/2 - (gp.tileSize/2);
+		screenY = gp.screenHeight/2 - (gp.tileSize/2);
 
 		setDefaultValues();
 		getPlayerImage();
@@ -27,9 +41,9 @@ public class Player extends Entity{
 	
 	public void setDefaultValues() {
 		
-		x = 100;
-		y = 100;
-		speed = 5;
+		worldX = gp.tileSize * 23;
+		worldY = gp.tileSize * 21;
+		speed = 6;
 		direction = "down";
 
 	}
@@ -60,19 +74,19 @@ public class Player extends Entity{
 			//Upper-left corner ix X:0 and Y:0 so -= playerSpeed brings player closer to 0
 			if (keyH.upPressed == true) {
 				direction = "up";
-				y -= speed; 
+				worldY -= speed; 
 			}
 			else if (keyH.downPressed == true) {
 				direction = "down";
-				y += speed;
+				worldY += speed;
 			}
 			else if (keyH.leftPressed == true) {
 				direction = "left";
-				x -= speed;
+				worldX -= speed;
 			}
 			else if (keyH.rightPressed == true) {
 				direction = "right";
-				x += speed;
+				worldX += speed;
 			}
 
 			//increases everytime update is called, 60 times per second
@@ -136,7 +150,7 @@ public class Player extends Entity{
 
 		//Draws Image on Screen
 		//null at the end is referred to as the Image Observer
-		g2.drawImage(image, x, y, gp.tileSize, gp.tileSize, null);
+		g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
 
 	}
 }

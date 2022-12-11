@@ -12,7 +12,7 @@ import entity.Player;
 
 public class GamePanel extends JPanel implements Runnable {
 		
-	//Screen Settings
+	//SCREEN SETTINGS:
 	final int originalTileSize = 16; // 16x16 tile
 	final int scale = 3; //Creates scale to multiply by
 		
@@ -22,26 +22,21 @@ public class GamePanel extends JPanel implements Runnable {
 	public final int maxScreenRow = 12; 
 	public final int screenWidth = tileSize * maxScreenCol;  // 768 pixels
 	public final int screenHeight = tileSize * maxScreenRow; // 576 pixels
+
+	//WORLD SETTINGS:
+	public final int maxWorldCol = 50;
+	public final int maxWorldRow = 50;
+	public final int worldWidth = tileSize * maxWorldCol;
+	public final int worldHeight = tileSize * maxWorldRow;
 	
 	//FPS
 	int FPS = 60;
 		
 	TileManager tileM = new TileManager(this);
-	//Allows gamepanel to recognize key input
-	KeyHandler keyH = new KeyHandler();
-
-	//Keeps program running, automatically calls the run() method
-	Thread gameThread;
+	KeyHandler keyH = new KeyHandler(); 	//Allows gamepanel to recognize key input
+	Thread gameThread; 						//Keeps program running, automatically calls the run() method
+	public Player player = new Player(this,keyH); 	//Creates a new player object
 	
-	//Creates a new player object
-	Player player = new Player(this,keyH);
-	
-	//Set Player Default Position
-	int playerX = 100;
-	int playerY = 100;
-	int playerSpeed = 5; //Moving 4 pixels
-	
-	//GamePanel Constructor	
 	public GamePanel() {
 		
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -110,11 +105,11 @@ public class GamePanel extends JPanel implements Runnable {
 	
 	public void paintComponent(Graphics g) {
 		
-			super.paintComponent(g); //super imports from parent class JPanel. Standard to use the paintCompoment method.	
+			super.paintComponent(g);    //super imports from parent class JPanel. Standard to use the paintCompoment method.	
 			
 			Graphics2D g2 = (Graphics2D)g;
-			//Background tiles HAVE to be before player
-			tileM.draw(g2);
+			tileM.draw(g2); 			//Background tiles HAVE to be before player
+
 			player.draw(g2);
 			
 			g2.dispose();
