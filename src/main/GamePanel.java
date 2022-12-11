@@ -16,7 +16,7 @@ public class GamePanel extends JPanel implements Runnable {
 	final int scale = 3; //Creates scale to multiply by
 		
 	//Customizing Screen Settings
-	final int tileSize = originalTileSize * scale; // each tile is 48x48 to adhere to modern screen sizes
+	public final int tileSize = originalTileSize * scale; // each tile is 48x48 to adhere to modern screen sizes
 	final int maxScreenCol = 16;
 	final int maxScreenRow = 12; 
 	final int screenWidth = tileSize * maxScreenCol;  // 768 pixels
@@ -31,6 +31,7 @@ public class GamePanel extends JPanel implements Runnable {
 	//Keeps program running, automatically calls the run() method
 	Thread gameThread;
 	
+	//Creates a new player object
 	Player player = new Player(this,keyH);
 	
 	//Set Player Default Position
@@ -81,6 +82,7 @@ public class GamePanel extends JPanel implements Runnable {
 				
 				//UPDATE: Needs to update player position every time a key is pressed
 				update();
+
 				//DRAW: Needs to redraw screen 30 or 60 times per second based on new player position 
 				repaint();
 				delta--;
@@ -100,34 +102,20 @@ public class GamePanel extends JPanel implements Runnable {
 	
 	public void update() {
 		
-		if (keyH.upPressed == true) {
-			playerY -= playerSpeed; //Upper-left corner ix X:0 and Y:0 so -= playerSpeed brings player closer to 0
-		}
-		else if (keyH.downPressed == true) {
-			playerY += playerSpeed;
-		}
-		else if (keyH.leftPressed == true) {
-			playerX -= playerSpeed;
-		}
-		else if (keyH.rightPressed == true) {
-			playerX += playerSpeed;
-		}
-		
+		player.update();
 		
 	}
 	
 	public void paintComponent(Graphics g) {
 		
-		super.paintComponent(g); //super imports from parent class JPanel. Standard to use the paintCompoment method.	
-		
-		Graphics2D g2 = (Graphics2D)g;
-		
-		g2.setColor(Color.white);
-		
-		g2.fillRect(playerX, playerY, tileSize, tileSize);
-		
-		g2.dispose();
-	}
+			super.paintComponent(g); //super imports from parent class JPanel. Standard to use the paintCompoment method.	
+			
+			Graphics2D g2 = (Graphics2D)g;
+			
+			player.draw(g2);
+			
+			g2.dispose();
+		}
 	
 }
 
