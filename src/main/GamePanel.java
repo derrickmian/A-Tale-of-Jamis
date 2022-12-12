@@ -35,6 +35,7 @@ public class GamePanel extends JPanel implements Runnable {
 	TileManager tileM = new TileManager(this);
 	KeyHandler keyH = new KeyHandler(); 	//Allows gamepanel to recognize key input
 	Thread gameThread; 						//Keeps program running, automatically calls the run() method
+	public CollisionChecker cChecker = new CollisionChecker(this);
 	public Player player = new Player(this,keyH); 	//Creates a new player object
 	
 	public GamePanel() {

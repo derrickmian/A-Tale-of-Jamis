@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.io.IOException;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
+import java.awt.Rectangle;
 
 //import java.awt.Color;
 
@@ -33,6 +34,9 @@ public class Player extends Entity{
 		//Correct Player Position, which subtracts half a tile length from both X and Y to get the center of the current player tile:
 		screenX = gp.screenWidth/2 - (gp.tileSize/2);
 		screenY = gp.screenHeight/2 - (gp.tileSize/2);
+
+		//Instantiate Collision Rectangle
+		solidArea = new Rectangle(8, 16, 28, 28); 
 
 		setDefaultValues();
 		getPlayerImage();
@@ -74,20 +78,38 @@ public class Player extends Entity{
 			//Upper-left corner ix X:0 and Y:0 so -= playerSpeed brings player closer to 0
 			if (keyH.upPressed == true) {
 				direction = "up";
-				worldY -= speed; 
 			}
 			else if (keyH.downPressed == true) {
 				direction = "down";
-				worldY += speed;
 			}
 			else if (keyH.leftPressed == true) {
 				direction = "left";
-				worldX -= speed;
 			}
 			else if (keyH.rightPressed == true) {
 				direction = "right";
-				worldX += speed;
 			}
+
+			//CHECK TILE COLLISION
+			collisionOn = false;
+
+			//Pass through the Player class itself.
+			//Because the Player class is a subclass of the entity class, the collsion checker
+			//can recieve player class as entity.
+			gp.cChecker.CheckTile(this);
+
+			//IF COLLISION IS FALSE, PLAYER CAN MOVE
+			if(collisionOn == false){
+
+				switch(direction){
+					case "up": worldY -= speed; break;
+					case "down": worldY += speed; break;
+					case "left": worldX -= speed; break;
+					case "right": worldX += speed; break;
+				}
+			}
+
+
+
 
 			//increases everytime update is called, 60 times per second
 			spriteCounter++;

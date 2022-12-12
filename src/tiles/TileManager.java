@@ -15,8 +15,8 @@ import java.io.BufferedReader;
 public class TileManager {
 
     GamePanel gp;
-    Tile[] tile;
-    int mapTileNum[][];
+    public Tile[] tile;
+    public int mapTileNum[][];
 
     public TileManager(GamePanel gp){
 
@@ -43,15 +43,20 @@ public class TileManager {
 
             tile[1] = new Tile();
             tile[1].image = ImageIO.read(getClass().getResourceAsStream("/main/res/tiles/wall.png"));
+            tile[1].collision = true;
 
             tile[2] = new Tile();
             tile[2].image = ImageIO.read(getClass().getResourceAsStream("/main/res/tiles/water.png"));
+            tile[2].collision = true;
+
 
             tile[3] = new Tile();
             tile[3].image = ImageIO.read(getClass().getResourceAsStream("/main/res/tiles/earth.png"));
 
             tile[4] = new Tile();
             tile[4].image = ImageIO.read(getClass().getResourceAsStream("/main/res/tiles/tree.png"));
+            tile[4].collision = true;
+
 
             tile[5] = new Tile();
             tile[5].image = ImageIO.read(getClass().getResourceAsStream("/main/res/tiles/sand.png"));
@@ -128,7 +133,7 @@ public class TileManager {
             //then player is 500 pixels away from the 0,0 tiles.
             //so the 0,0 tiles of the SCREEN should be drawn 500 tiles to the left 
             //and 500 tiles to the top 
-            //TODO: UNDERSTYAND WHY gp.player.screenX and Y ARE ADDED HERE
+            //TODO: Not sure WHY gp.player.screenX and Y are added here
             int screenX = worldX - gp.player.worldX + gp.player.screenX;
             int screenY = worldY - gp.player.worldY + gp.player.screenY;
 
@@ -148,7 +153,6 @@ public class TileManager {
 
             worldCol++;
 
-            //TODO:Discuss as an issue i stumbled upon. maxWorldCol was set to maxScreenCol, only loading the first 16 tiles.
             if(worldCol == gp.maxWorldCol){
 
                 worldCol = 0;
