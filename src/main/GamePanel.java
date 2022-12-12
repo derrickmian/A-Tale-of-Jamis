@@ -9,6 +9,7 @@ import tiles.TileManager;
 import javax.swing.JPanel;
 
 import entity.Player;
+import object.SuperObjects;
 
 public class GamePanel extends JPanel implements Runnable {
 		
@@ -36,7 +37,9 @@ public class GamePanel extends JPanel implements Runnable {
 	KeyHandler keyH = new KeyHandler(); 	//Allows gamepanel to recognize key input
 	Thread gameThread; 						//Keeps program running, automatically calls the run() method
 	public CollisionChecker cChecker = new CollisionChecker(this);
+	public ObjectSetter oSetter = new ObjectSetter(this);
 	public Player player = new Player(this,keyH); 	//Creates a new player object
+	public SuperObjects obj[] = new SuperObjects[10];   //Alloted 10 slots to display objects, not necessarily 10 total objects.
 	
 	public GamePanel() {
 		
@@ -48,6 +51,11 @@ public class GamePanel extends JPanel implements Runnable {
 		
 	}
 
+	public void setupGame(){
+
+		oSetter.setObject();  //you want this called before the game even starts
+
+	}
 	//Used to keep track of time. 
 	public void startGameThread() {
 		
@@ -109,8 +117,19 @@ public class GamePanel extends JPanel implements Runnable {
 			super.paintComponent(g);    //super imports from parent class JPanel. Standard to use the paintCompoment method.	
 			
 			Graphics2D g2 = (Graphics2D)g;
+
+			//DRAW TILES
 			tileM.draw(g2); 			//Background tiles HAVE to be before player
 
+			//OBJECT
+			//check to see if there is an object to even draw
+			for(int i = 0; i < obj.length; i++){
+				if(obj[i] != null ){
+					obj[i].draw(g2, this);
+				}
+			}
+
+			//DRAW PLAYER
 			player.draw(g2);
 			
 			g2.dispose();

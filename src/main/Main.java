@@ -22,6 +22,7 @@ public class Main {
 		window.setLocationRelativeTo(null); // Positions screen in the center
 		window.setVisible(true); // screen can be visible
 
+		gamepanel.setupGame();
 		gamepanel.startGameThread(); // Starts game
 
 	}
