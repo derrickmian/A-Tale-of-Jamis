@@ -3,6 +3,7 @@ package main;
 import object.obj_key;
 import object.obj_door;
 import object.obj_chest;
+import object.obj_boots;
 
 public class ObjectSetter {
 
@@ -44,6 +45,10 @@ public class ObjectSetter {
         gp.obj[6] = new obj_chest();
         gp.obj[6].worldX = 10 * gp.tileSize;  
         gp.obj[6].worldY = 8 * gp.tileSize;
+
+        gp.obj[7] = new obj_boots();
+        gp.obj[7].worldX = 11 * gp.tileSize;  
+        gp.obj[7].worldY = 33 * gp.tileSize;
 
 
 

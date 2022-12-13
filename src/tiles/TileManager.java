@@ -46,12 +46,12 @@ public class TileManager {
             tile[1].collision = true;
 
             tile[2] = new Tile();
-            tile[2].image = ImageIO.read(getClass().getResourceAsStream("/main/res/tiles/water.png"));
+            tile[2].image = ImageIO.read(getClass().getResourceAsStream("/main/res/tiles/water1.png"));
             tile[2].collision = true;
 
 
             tile[3] = new Tile();
-            tile[3].image = ImageIO.read(getClass().getResourceAsStream("/main/res/tiles/earth.png"));
+            tile[3].image = ImageIO.read(getClass().getResourceAsStream("/main/res/tiles/cobblestone.png"));
 
             tile[4] = new Tile();
             tile[4].image = ImageIO.read(getClass().getResourceAsStream("/main/res/tiles/tree.png"));
@@ -59,13 +59,14 @@ public class TileManager {
 
 
             tile[5] = new Tile();
-            tile[5].image = ImageIO.read(getClass().getResourceAsStream("/main/res/tiles/sand.png"));
+            tile[5].image = ImageIO.read(getClass().getResourceAsStream("/main/res/tiles/darkgrass.png"));
 
 
         } catch(IOException e){
             e.printStackTrace();
         }
     }
+
 
     public void loadMap(String filePath){
 
@@ -108,7 +109,6 @@ public class TileManager {
     }
 
     public void draw(Graphics2D g2){
-
 
         int worldCol = 0;
         int worldRow = 0;
