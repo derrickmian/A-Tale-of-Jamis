@@ -37,6 +37,7 @@ public class GamePanel extends JPanel implements Runnable {
 	Sound sound = new Sound();
 	public CollisionChecker cChecker = new CollisionChecker(this);
 	public ObjectSetter oSetter = new ObjectSetter(this);
+	public UI ui = new UI(this);
 	Thread gameThread; 						//Keeps program running, automatically calls the run() method
 
 	// ENTITY AND OBJECT
@@ -136,7 +137,11 @@ public class GamePanel extends JPanel implements Runnable {
 			//DRAW PLAYER
 			player.draw(g2);
 			
+			//UI is called AFTER everything since it is drawn on top of every other element
+			ui.draw(g2);
+			
 			g2.dispose();
+
 		}
 
 	public void playMusic(int i){
